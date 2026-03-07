@@ -75,7 +75,12 @@
                 "input": "projects/webmcp-demo/public"
               }
             ],
-            "styles": ["projects/webmcp-demo/src/styles.css"]
+            "styles": [
+              "projects/webmcp-demo/src/styles.css"
+            ],
+            "polyfills": [
+              "zone.js"
+            ]
           },
           "configurations": {
             "production": {
