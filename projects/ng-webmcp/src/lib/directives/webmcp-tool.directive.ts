@@ -5,6 +5,7 @@ import {
   Output,
   DestroyRef,
   OnInit,
+  NgZone,
   inject,
 } from '@angular/core';
 import { WebmcpService } from '../services/webmcp.service';
@@ -17,6 +18,7 @@ import type { WebMcpInputSchema } from '../types/webmcp.types';
 export class WebmcpToolDirective implements OnInit {
   private readonly webmcp = inject(WebmcpService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly ngZone = inject(NgZone);
 
   @Input({ required: true }) toolName!: string;
   @Input({ required: true }) toolDescription!: string;
@@ -32,7 +34,9 @@ export class WebmcpToolDirective implements OnInit {
     };
 
     this.webmcp.registerTool(schema, (args) => {
-      this.toolInvoked.emit(args);
+      this.ngZone.run(() => {
+        this.toolInvoked.emit(args);
+      });
       return { content: [{ type: 'text' as const, text: 'Tool invoked via directive' }] };
     });
 
