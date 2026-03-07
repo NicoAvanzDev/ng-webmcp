@@ -1,15 +1,14 @@
 /**
  * Installs a polyfill for `navigator.modelContext` for development and testing.
- * Since WebMCP is only available in Chrome Canary behind a flag, this enables
- * local development and unit testing.
+ * Matches the real Chrome WebMCP API where registerTool takes a single object
+ * with an `execute` property.
  */
 export function installWebMcpPolyfill(): void {
   if (typeof navigator !== 'undefined' && !(navigator as any).modelContext) {
-    const tools = new Map<string, { schema: any; handler: any }>();
+    const tools = new Map<string, any>();
     Object.defineProperty(navigator, 'modelContext', {
       value: {
-        registerTool: (schema: any, handler: any) =>
-          tools.set(schema.name, { schema, handler }),
+        registerTool: (tool: any) => tools.set(tool.name, tool),
         unregisterTool: (name: string) => tools.delete(name),
         _tools: tools,
       },

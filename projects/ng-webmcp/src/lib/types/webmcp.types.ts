@@ -6,16 +6,22 @@ export interface JsonSchemaProperty {
   items?: JsonSchemaProperty;
   properties?: Record<string, JsonSchemaProperty>;
   required?: string[];
+  oneOf?: Array<{ const: unknown; title?: string }>;
+  title?: string;
 }
 
-export interface WebMcpToolSchema {
+export interface WebMcpInputSchema {
+  type: 'object';
+  properties: Record<string, JsonSchemaProperty>;
+  required?: string[];
+}
+
+export interface WebMcpToolDefinition<T = Record<string, unknown>> {
   name: string;
   description: string;
-  inputSchema: Record<string, JsonSchemaProperty>;
-}
-
-export interface WebMcpToolHandler<T = Record<string, unknown>> {
-  (args: T): WebMcpToolResult | Promise<WebMcpToolResult>;
+  inputSchema: WebMcpInputSchema;
+  annotations?: Record<string, string>;
+  execute: (args: T) => WebMcpToolResult | Promise<WebMcpToolResult>;
 }
 
 export interface WebMcpToolResult {
@@ -37,10 +43,19 @@ export interface WebMcpConfig {
 
 /** Shape of navigator.modelContext when available */
 export interface ModelContextApi {
-  registerTool(schema: WebMcpToolSchema, handler: WebMcpToolHandler): void;
+  registerTool(tool: WebMcpToolDefinition): void;
   unregisterTool(name: string): void;
   /** Polyfill inspection helper */
-  _tools?: Map<string, { schema: WebMcpToolSchema; handler: WebMcpToolHandler }>;
+  _tools?: Map<string, WebMcpToolDefinition>;
 }
 
-
+/**
+ * Schema-only definition used by the decorator and directive.
+ * The `execute` callback is provided separately.
+ */
+export interface WebMcpToolSchema {
+  name: string;
+  description: string;
+  inputSchema: WebMcpInputSchema;
+  annotations?: Record<string, string>;
+}

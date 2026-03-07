@@ -33,7 +33,7 @@ import { JsonPipe } from '@angular/common';
         webmcpTool
         toolName="submit-form"
         toolDescription="Submit the checkout form"
-        [inputSchema]="{ note: { type: 'string', description: 'Optional note' } }"
+        [inputSchema]="{ type: 'object', properties: { note: { type: 'string', description: 'Optional note' } } }"
         (toolInvoked)="onFormSubmit($event)"
       >
         Checkout

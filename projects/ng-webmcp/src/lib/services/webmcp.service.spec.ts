@@ -9,7 +9,7 @@ function installPolyfill(): Map<string, any> {
   const tools = new Map<string, any>();
   Object.defineProperty(navigator, 'modelContext', {
     value: {
-      registerTool: (schema: any, handler: any) => tools.set(schema.name, { schema, handler }),
+      registerTool: (tool: any) => tools.set(tool.name, tool),
       unregisterTool: (name: string) => tools.delete(name),
       _tools: tools,
     },
@@ -26,7 +26,7 @@ function clearPolyfill(): void {
 const testSchema: WebMcpToolSchema = {
   name: 'test-tool',
   description: 'A test tool',
-  inputSchema: { query: { type: 'string', description: 'test' } },
+  inputSchema: { type: 'object', properties: { query: { type: 'string', description: 'test' } } },
 };
 
 describe('WebmcpService', () => {
