@@ -1,5 +1,7 @@
 # ng-webmcp
 
+[![CI](https://github.com/NicoAvanzDev/ng-webmcp/actions/workflows/ci.yml/badge.svg)](https://github.com/NicoAvanzDev/ng-webmcp/actions/workflows/ci.yml)
+
 Angular library for the [WebMCP (Web Model Context Protocol)](https://webmachinelearning.github.io/webmcp/) browser API. Expose your Angular application as an AI-agent-ready tool provider using idiomatic Angular patterns.
 
 ## What is WebMCP?
