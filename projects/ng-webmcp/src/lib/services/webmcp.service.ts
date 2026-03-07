@@ -11,14 +11,18 @@ import { isPlatformBrowser } from '@angular/common';
 import { WEBMCP_CONFIG } from '../tokens/webmcp-config.token';
 import type {
   WebMcpToolSchema,
-  WebMcpToolHandler,
+  WebMcpToolDefinition,
   WebMcpConfig,
   ModelContextApi,
+  WebMcpToolResult,
 } from '../types/webmcp.types';
 
 function getModelContext(): ModelContextApi | undefined {
   return (navigator as any).modelContext as ModelContextApi | undefined;
 }
+
+export type WebMcpToolHandler<T = Record<string, unknown>> =
+  (args: T) => WebMcpToolResult | Promise<WebMcpToolResult>;
 
 @Injectable({ providedIn: 'root' })
 export class WebmcpService implements OnDestroy {
@@ -38,6 +42,10 @@ export class WebmcpService implements OnDestroy {
     this.destroyRef.onDestroy(() => this.disposeAll());
   }
 
+  /**
+   * Register a tool with navigator.modelContext.
+   * Follows the real WebMCP API: a single object with `execute` as a property.
+   */
   registerTool<T = Record<string, unknown>>(
     schema: WebMcpToolSchema,
     handler: WebMcpToolHandler<T>,
@@ -50,7 +58,12 @@ export class WebmcpService implements OnDestroy {
       return;
     }
 
-    mc.registerTool(schema, handler as WebMcpToolHandler);
+    const toolDef: WebMcpToolDefinition = {
+      ...schema,
+      execute: handler as WebMcpToolHandler,
+    };
+
+    mc.registerTool(toolDef);
     this.registry.set(schema.name, schema);
     this.log('debug', `Registered tool: ${schema.name}`);
   }

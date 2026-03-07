@@ -8,7 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import { WebmcpService } from '../services/webmcp.service';
-import type { JsonSchemaProperty, WebMcpToolResult } from '../types/webmcp.types';
+import type { WebMcpInputSchema } from '../types/webmcp.types';
 
 @Directive({
   selector: '[webmcpTool]',
@@ -20,7 +20,7 @@ export class WebmcpToolDirective implements OnInit {
 
   @Input({ required: true }) toolName!: string;
   @Input({ required: true }) toolDescription!: string;
-  @Input() inputSchema: Record<string, JsonSchemaProperty> = {};
+  @Input() inputSchema: WebMcpInputSchema = { type: 'object', properties: {} };
 
   @Output() toolInvoked = new EventEmitter<any>();
 

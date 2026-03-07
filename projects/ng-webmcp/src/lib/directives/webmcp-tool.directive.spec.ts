@@ -7,7 +7,7 @@ function installPolyfill(): Map<string, any> {
   const tools = new Map<string, any>();
   Object.defineProperty(navigator, 'modelContext', {
     value: {
-      registerTool: (schema: any, handler: any) => tools.set(schema.name, { schema, handler }),
+      registerTool: (tool: any) => tools.set(tool.name, tool),
       unregisterTool: (name: string) => tools.delete(name),
       _tools: tools,
     },
@@ -70,7 +70,7 @@ describe('WebmcpToolDirective', () => {
 
   it('should emit toolInvoked when handler is called', () => {
     const entry = tools.get('test-directive');
-    entry.handler({ foo: 'bar' });
+    entry.execute({ foo: 'bar' });
     expect(fixture.componentInstance.lastArgs).toEqual({ foo: 'bar' });
   });
 });
