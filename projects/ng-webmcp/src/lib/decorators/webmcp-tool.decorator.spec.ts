@@ -8,7 +8,7 @@ describe('WebmcpTool decorator', () => {
       @WebmcpTool({
         name: 'test',
         description: 'A test',
-        inputSchema: { q: { type: 'string' } },
+        inputSchema: { type: 'object', properties: { q: { type: 'string' } } },
       })
       doStuff(_args: any): WebMcpToolResult {
         return { content: [{ type: 'text', text: 'done' }] };
@@ -26,7 +26,7 @@ describe('WebmcpTool decorator', () => {
       @WebmcpTool({
         name: 'search',
         description: 'Search',
-        inputSchema: {},
+        inputSchema: { type: 'object', properties: {} },
       })
       search(_args: any): WebMcpToolResult {
         return { content: [{ type: 'text', text: 'results' }] };
