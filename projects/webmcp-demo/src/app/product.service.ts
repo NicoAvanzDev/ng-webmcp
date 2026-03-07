@@ -21,8 +21,12 @@ export class ProductService {
     name: 'search-products',
     description: 'Search the product catalog by keyword',
     inputSchema: {
-      query: { type: 'string', description: 'The search term' },
-      limit: { type: 'number', description: 'Max results', default: 10 },
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'The search term' },
+        limit: { type: 'number', description: 'Max results' },
+      },
+      required: ['query'],
     },
   })
   async searchProducts(args: { query: string; limit?: number }): Promise<WebMcpToolResult> {
