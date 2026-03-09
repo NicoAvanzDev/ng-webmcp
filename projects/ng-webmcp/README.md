@@ -76,7 +76,9 @@ Import this before bootstrapping Angular.
 
 ## Publishing
 
-The GitHub Actions release workflow publishes only when the pushed tag exactly matches the library version in `projects/ng-webmcp/package.json`. Configure the `NPM_TOKEN` repository secret before creating the tag.
+The GitHub Actions release workflow publishes only when the pushed tag exactly matches the library version in `projects/ng-webmcp/package.json`.
+
+Configure npm Trusted Publisher for this GitHub repository and workflow file before creating the tag. No `NPM_TOKEN` secret is required.
 
 ```bash
 npm run build:lib
@@ -88,4 +90,3 @@ git push origin v0.1.0
 
 - [W3C WebMCP Spec](https://webmachinelearning.github.io/webmcp/)
 - [GitHub Repo](https://github.com/nicoavanzdev/ng-webmcp)
-
