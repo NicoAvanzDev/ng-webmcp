@@ -8,8 +8,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "paths": {
-      "@nicoavanzdev/ng-webmcp": ["./projects/ng-webmcp/src/public-api.ts", "./dist/ng-webmcp"],
-      "@nicoavanzdev/ng-webmcp/testing": ["./projects/ng-webmcp/testing/src/public-api.ts", "./dist/ng-webmcp/testing"]
+      "ng-webmcp": ["./projects/ng-webmcp/src/public-api.ts", "./dist/ng-webmcp"],
+      "ng-webmcp/testing": ["./projects/ng-webmcp/testing/src/public-api.ts", "./dist/ng-webmcp/testing"]
     },
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
@@ -38,4 +38,5 @@
     }
   ]
 }
+
 

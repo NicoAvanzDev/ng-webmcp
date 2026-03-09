@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { WebmcpService, WebmcpTool, registerDecoratedTools } from '@nicoavanzdev/ng-webmcp';
-import type { WebMcpToolResult } from '@nicoavanzdev/ng-webmcp';
+import { WebmcpService, WebmcpTool, registerDecoratedTools } from 'ng-webmcp';
+import type { WebMcpToolResult } from 'ng-webmcp';
 
 const MOCK_PRODUCTS = [
   { id: 1, name: 'Angular Handbook', price: 39.99 },
@@ -35,4 +35,5 @@ export class ProductService {
     return { content: [{ type: 'text', text: JSON.stringify(results, null, 2) }] };
   }
 }
+
 

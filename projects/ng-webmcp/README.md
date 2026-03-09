@@ -5,7 +5,7 @@ Angular library for the [WebMCP (Web Model Context Protocol)](https://webmachine
 ## Installation
 
 ```bash
-npm install @nicoavanzdev/ng-webmcp
+npm install ng-webmcp
 ```
 
 ## Quick Start
@@ -14,7 +14,7 @@ npm install @nicoavanzdev/ng-webmcp
 
 ```typescript
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideWebmcp } from '@nicoavanzdev/ng-webmcp';
+import { provideWebmcp } from 'ng-webmcp';
 
 bootstrapApplication(AppComponent, {
   providers: [provideWebmcp({ fallbackBehavior: 'warn' })],
@@ -24,7 +24,7 @@ bootstrapApplication(AppComponent, {
 ### NgModule Application
 
 ```typescript
-import { WebmcpModule } from '@nicoavanzdev/ng-webmcp';
+import { WebmcpModule } from 'ng-webmcp';
 
 @NgModule({
   imports: [WebmcpModule.forRoot({ fallbackBehavior: 'warn' })],
@@ -40,7 +40,7 @@ import {
   WebmcpService,
   WebmcpTool,
   registerDecoratedTools,
-} from '@nicoavanzdev/ng-webmcp';
+} from 'ng-webmcp';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -67,7 +67,7 @@ export class ProductService {
 ### Development Polyfill
 
 ```typescript
-import { installWebMcpPolyfill } from '@nicoavanzdev/ng-webmcp/testing';
+import { installWebMcpPolyfill } from 'ng-webmcp/testing';
 
 installWebMcpPolyfill();
 ```
@@ -88,3 +88,4 @@ git push origin v0.1.0
 
 - [W3C WebMCP Spec](https://webmachinelearning.github.io/webmcp/)
 - [GitHub Repo](https://github.com/nicoavanzdev/ng-webmcp)
+

@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideWebmcp } from '@nicoavanzdev/ng-webmcp';
+import { provideWebmcp } from 'ng-webmcp';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -11,4 +11,5 @@ export const appConfig: ApplicationConfig = {
     provideWebmcp({ logLevel: 'debug', fallbackBehavior: 'warn' }),
   ],
 };
+
 
