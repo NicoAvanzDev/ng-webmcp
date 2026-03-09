@@ -42,6 +42,7 @@ jobs:
         run: npm pack ./dist/ng-webmcp --dry-run
 
       - name: Publish package
-        run: npm publish ./dist/ng-webmcp --access public
+        run: npm publish ./dist/ng-webmcp
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+

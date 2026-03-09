@@ -1,4 +1,4 @@
-import { installWebMcpPolyfill } from '@nicoavanzdev/ng-webmcp/testing';
+import { installWebMcpPolyfill } from 'ng-webmcp/testing';
 
 // Install polyfill before Angular bootstraps
 installWebMcpPolyfill();
@@ -8,4 +8,5 @@ import { appConfig } from './app/app.config';
 import { App } from './app/app';
 
 bootstrapApplication(App, appConfig).catch((err) => console.error(err));
+
 

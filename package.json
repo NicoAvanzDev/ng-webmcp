@@ -9,7 +9,7 @@
     "test": "ng test",
     "build:lib": "ng build ng-webmcp",
     "pack:lib": "npm pack ./dist/ng-webmcp --dry-run",
-    "publish:lib": "npm publish ./dist/ng-webmcp --access public"
+    "publish:lib": "npm publish ./dist/ng-webmcp"
   },
   "private": true,
   "packageManager": "npm@10.9.4",
