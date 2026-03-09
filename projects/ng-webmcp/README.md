@@ -1,64 +1,90 @@
-# NgWebmcp
+# ng-webmcp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+Angular library for the [WebMCP (Web Model Context Protocol)](https://webmachinelearning.github.io/webmcp/) browser API. Expose your Angular application as an AI-agent-ready tool provider using idiomatic Angular patterns.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Installation
 
 ```bash
-ng generate component component-name
+npm install @nicoavanzdev/ng-webmcp
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Quick Start
+
+### Standalone Application
+
+```typescript
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideWebmcp } from '@nicoavanzdev/ng-webmcp';
+
+bootstrapApplication(AppComponent, {
+  providers: [provideWebmcp({ fallbackBehavior: 'warn' })],
+});
+```
+
+### NgModule Application
+
+```typescript
+import { WebmcpModule } from '@nicoavanzdev/ng-webmcp';
+
+@NgModule({
+  imports: [WebmcpModule.forRoot({ fallbackBehavior: 'warn' })],
+})
+export class AppModule {}
+```
+
+### Register a Tool via Decorator
+
+```typescript
+import { inject, Injectable } from '@angular/core';
+import {
+  WebmcpService,
+  WebmcpTool,
+  registerDecoratedTools,
+} from '@nicoavanzdev/ng-webmcp';
+
+@Injectable({ providedIn: 'root' })
+export class ProductService {
+  private webmcp = inject(WebmcpService);
+
+  constructor() {
+    registerDecoratedTools(this, this.webmcp);
+  }
+
+  @WebmcpTool({
+    name: 'search-products',
+    description: 'Search the product catalog',
+    inputSchema: {
+      query: { type: 'string', description: 'Search term' },
+    },
+  })
+  async search(args: { query: string }) {
+    const results = await this.api.search(args.query);
+    return { content: [{ type: 'text', text: JSON.stringify(results) }] };
+  }
+}
+```
+
+### Development Polyfill
+
+```typescript
+import { installWebMcpPolyfill } from '@nicoavanzdev/ng-webmcp/testing';
+
+installWebMcpPolyfill();
+```
+
+Import this before bootstrapping Angular.
+
+## Publishing
+
+The GitHub Actions release workflow publishes only when the pushed tag exactly matches the library version in `projects/ng-webmcp/package.json`. Configure the `NPM_TOKEN` repository secret before creating the tag.
 
 ```bash
-ng generate --help
+npm run build:lib
+git tag v0.1.0
+git push origin v0.1.0
 ```
 
-## Building
+## Links
 
-To build the library, run:
-
-```bash
-ng build ng-webmcp
-```
-
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
-
-### Publishing the Library
-
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-
-   ```bash
-   cd dist/ng-webmcp
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [W3C WebMCP Spec](https://webmachinelearning.github.io/webmcp/)
+- [GitHub Repo](https://github.com/nicoavanzdev/ng-webmcp)

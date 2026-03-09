@@ -11,7 +11,7 @@ WebMCP is a W3C Community Group standard that allows web pages to expose structu
 ## Installation
 
 ```bash
-npm install ng-webmcp
+npm install @nicoavanzdev/ng-webmcp
 ```
 
 ## Quick Start
@@ -21,7 +21,7 @@ npm install ng-webmcp
 ```typescript
 // main.ts
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideWebmcp } from 'ng-webmcp';
+import { provideWebmcp } from '@nicoavanzdev/ng-webmcp';
 
 bootstrapApplication(AppComponent, {
   providers: [provideWebmcp({ fallbackBehavior: 'warn' })],
@@ -31,7 +31,7 @@ bootstrapApplication(AppComponent, {
 ### NgModule Application
 
 ```typescript
-import { WebmcpModule } from 'ng-webmcp';
+import { WebmcpModule } from '@nicoavanzdev/ng-webmcp';
 
 @NgModule({
   imports: [WebmcpModule.forRoot({ fallbackBehavior: 'warn' })],
@@ -43,7 +43,7 @@ export class AppModule {}
 
 ```typescript
 import { inject } from '@angular/core';
-import { WebmcpService, WebmcpTool, registerDecoratedTools } from 'ng-webmcp';
+import { WebmcpService, WebmcpTool, registerDecoratedTools } from '@nicoavanzdev/ng-webmcp';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -115,7 +115,7 @@ export class MyComponent {
 Since `navigator.modelContext` is only available in Chrome 146+ Canary with a flag, use the testing polyfill for development:
 
 ```typescript
-import { installWebMcpPolyfill } from 'ng-webmcp/testing';
+import { installWebMcpPolyfill } from '@nicoavanzdev/ng-webmcp/testing';
 installWebMcpPolyfill();
 ```
 
@@ -137,3 +137,4 @@ Import this **before** bootstrapping Angular.
 ## License
 
 MIT
+

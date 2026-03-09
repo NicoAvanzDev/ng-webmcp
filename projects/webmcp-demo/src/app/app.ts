@@ -1,5 +1,5 @@
 import { Component, inject, computed } from '@angular/core';
-import { WebmcpService, WebmcpToolDirective } from 'ng-webmcp';
+import { WebmcpService, WebmcpToolDirective } from '@nicoavanzdev/ng-webmcp';
 import { ProductService } from './product.service';
 import { JsonPipe } from '@angular/common';
 
@@ -56,3 +56,4 @@ export class App {
     console.log('Form submitted via WebMCP tool:', args);
   }
 }
+
