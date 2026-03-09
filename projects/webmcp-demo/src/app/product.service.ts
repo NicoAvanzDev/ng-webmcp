@@ -35,3 +35,5 @@ export class ProductService {
     return { content: [{ type: 'text', text: JSON.stringify(results, null, 2) }] };
   }
 }
+
+
