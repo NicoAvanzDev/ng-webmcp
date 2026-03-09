@@ -11,3 +11,5 @@ export const appConfig: ApplicationConfig = {
     provideWebmcp({ logLevel: 'debug', fallbackBehavior: 'warn' }),
   ],
 };
+
+

@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Upgrade npm for trusted publishing
+        run: npm install -g npm@^11.5.1
+
+      - name: Validate tag matches library version
+        shell: bash
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./projects/ng-webmcp/package.json').version")
+          EXPECTED_TAG="v${PACKAGE_VERSION}"
+          ACTUAL_TAG="${GITHUB_REF_NAME}"
+
+          if [ "$ACTUAL_TAG" != "$EXPECTED_TAG" ]; then
+            echo "Expected tag $EXPECTED_TAG but received $ACTUAL_TAG"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Verify npm package contents
+        run: npm pack ./dist/ng-webmcp --dry-run
+
+      - name: Publish package
+        run: npm publish ./dist/ng-webmcp

@@ -56,3 +56,5 @@ export class App {
     console.log('Form submitted via WebMCP tool:', args);
   }
 }
+
+
