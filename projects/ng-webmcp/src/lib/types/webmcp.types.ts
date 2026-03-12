@@ -7,7 +7,6 @@ export interface JsonSchemaProperty {
   properties?: Record<string, JsonSchemaProperty>;
   required?: string[];
   oneOf?: Array<{ const: unknown; title?: string }>;
-  title?: string;
 }
 
 export interface WebMcpInputSchema {

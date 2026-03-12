@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 (2026-03-12)
+
+### Breaking Changes
+
+- **JsonSchemaProperty**: Removed `title` field to align with the WebMCP spec removal of the `toolparamtitle` HTML attribute (Mar 12, 2026 changelog). Use `description` for parameter descriptions.
+- **ModelContextApi**: `provideContext` and `clearContext` methods were removed from the spec (Mar 6, 2026 changelog) and were never included in this library.
+
 ## 0.1.0 (2026-03-07)
 
 ### Features
