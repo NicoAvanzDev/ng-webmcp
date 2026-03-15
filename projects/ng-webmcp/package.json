@@ -9,15 +9,15 @@
     "ai",
     "browser"
   ],
-  "author": "nicoavanzdev",
+  "author": "NicoAvanzDev",
   "license": "MIT",
-  "homepage": "https://github.com/nicoavanzdev/ng-webmcp#readme",
+  "homepage": "https://github.com/NicoAvanzDev/ng-webmcp#readme",
   "bugs": {
-    "url": "https://github.com/nicoavanzdev/ng-webmcp/issues"
+    "url": "https://github.com/NicoAvanzDev/ng-webmcp/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nicoavanzdev/ng-webmcp.git",
+    "url": "git+https://github.com/NicoAvanzDev/ng-webmcp.git",
     "directory": "projects/ng-webmcp"
   },
   "peerDependencies": {
