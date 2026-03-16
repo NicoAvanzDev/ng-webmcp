@@ -1,5 +1,5 @@
-import { Injectable, inject } from '@angular/core';
-import { WebmcpService, WebmcpTool, registerDecoratedTools } from 'ng-webmcp';
+import { Injectable } from '@angular/core';
+import { WebmcpTool, WebmcpToolRegistrar } from 'ng-webmcp';
 import type { WebMcpToolResult } from 'ng-webmcp';
 
 const MOCK_PRODUCTS = [
@@ -10,13 +10,7 @@ const MOCK_PRODUCTS = [
 ];
 
 @Injectable({ providedIn: 'root' })
-export class ProductService {
-  private readonly webmcp = inject(WebmcpService);
-
-  constructor() {
-    registerDecoratedTools(this, this.webmcp);
-  }
-
+export class ProductService extends WebmcpToolRegistrar {
   @WebmcpTool({
     name: 'search-products',
     description: 'Search the product catalog by keyword',
@@ -31,7 +25,10 @@ export class ProductService {
   })
   async searchProducts(args: { query: string; limit?: number }): Promise<WebMcpToolResult> {
     const q = args.query.toLowerCase();
-    const results = MOCK_PRODUCTS.filter((p) => p.name.toLowerCase().includes(q)).slice(0, args.limit ?? 10);
+    const results = MOCK_PRODUCTS.filter((p) => p.name.toLowerCase().includes(q)).slice(
+      0,
+      args.limit ?? 10,
+    );
     return { content: [{ type: 'text', text: JSON.stringify(results, null, 2) }] };
   }
 }

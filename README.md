@@ -41,18 +41,14 @@ export class AppModule {}
 
 ### Register a Tool via Service
 
+Extend `WebmcpToolRegistrar` for automatic registration — no constructor boilerplate required:
+
 ```typescript
-import { inject } from '@angular/core';
-import { WebmcpService, WebmcpTool, registerDecoratedTools } from 'ng-webmcp';
+import { Injectable } from '@angular/core';
+import { WebmcpTool, WebmcpToolRegistrar } from 'ng-webmcp';
 
 @Injectable({ providedIn: 'root' })
-export class ProductService {
-  private webmcp = inject(WebmcpService);
-
-  constructor() {
-    registerDecoratedTools(this, this.webmcp);
-  }
-
+export class ProductService extends WebmcpToolRegistrar {
   @WebmcpTool({
     name: 'search-products',
     description: 'Search the product catalog',
@@ -64,6 +60,24 @@ export class ProductService {
     const results = await this.api.search(args.query);
     return { content: [{ type: 'text', text: JSON.stringify(results) }] };
   }
+}
+```
+
+If your class already extends another base class, call `registerDecoratedTools()` manually instead:
+
+```typescript
+import { inject } from '@angular/core';
+import { WebmcpService, WebmcpTool, registerDecoratedTools } from 'ng-webmcp';
+
+@Injectable({ providedIn: 'root' })
+export class ProductService extends SomeOtherBase {
+  constructor() {
+    super();
+    registerDecoratedTools(this, inject(WebmcpService));
+  }
+
+  @WebmcpTool({ name: 'search-products', description: 'Search the product catalog', inputSchema: { ... } })
+  async search(args: { query: string }) { ... }
 }
 ```
 
@@ -92,22 +106,23 @@ export class MyComponent {
 
 ## API Reference
 
-| Export | Type | Description |
-|---|---|---|
-| `WebmcpService` | Service | Core service for registering/unregistering tools |
-| `WebmcpTool` | Decorator | Method decorator to mark a method as a WebMCP tool |
-| `registerDecoratedTools` | Function | Registers all decorated methods of an instance |
-| `WebmcpToolDirective` | Directive | Attribute directive for component-level tools |
-| `WebmcpModule` | NgModule | Module with `forRoot()` for NgModule-based apps |
-| `provideWebmcp` | Function | Provider function for standalone apps |
-| `WEBMCP_CONFIG` | InjectionToken | Configuration token |
+| Export                   | Type           | Description                                             |
+| ------------------------ | -------------- | ------------------------------------------------------- |
+| `WebmcpService`          | Service        | Core service for registering/unregistering tools        |
+| `WebmcpTool`             | Decorator      | Method decorator to mark a method as a WebMCP tool      |
+| `WebmcpToolRegistrar`    | Abstract class | Base class for automatic decorator-based registration   |
+| `registerDecoratedTools` | Function       | Registers all decorated methods of an instance (manual) |
+| `WebmcpToolDirective`    | Directive      | Attribute directive for component-level tools           |
+| `WebmcpModule`           | NgModule       | Module with `forRoot()` for NgModule-based apps         |
+| `provideWebmcp`          | Function       | Provider function for standalone apps                   |
+| `WEBMCP_CONFIG`          | InjectionToken | Configuration token                                     |
 
 ### WebMcpConfig
 
-| Option | Type | Default | Description |
-|---|---|---|---|
-| `autoInit` | `boolean` | `true` | Auto-initialize on service creation |
-| `logLevel` | `'debug' \| 'warn' \| 'none'` | `'warn'` | Console logging level |
+| Option             | Type                            | Default  | Description                                           |
+| ------------------ | ------------------------------- | -------- | ----------------------------------------------------- |
+| `autoInit`         | `boolean`                       | `true`   | Auto-initialize on service creation                   |
+| `logLevel`         | `'debug' \| 'warn' \| 'none'`   | `'warn'` | Console logging level                                 |
 | `fallbackBehavior` | `'silent' \| 'warn' \| 'throw'` | `'warn'` | Behavior when `navigator.modelContext` is unavailable |
 
 ## Development Polyfill
@@ -123,10 +138,10 @@ Import this **before** bootstrapping Angular.
 
 ## Browser Support
 
-| Browser | Support |
-|---|---|
+| Browser              | Support                             |
+| -------------------- | ----------------------------------- |
 | Chrome 146+ (Canary) | ✅ Behind `chrome://flags/#web-mcp` |
-| Other browsers | ❌ Use polyfill for development |
+| Other browsers       | ❌ Use polyfill for development     |
 
 ## Links
 

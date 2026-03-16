@@ -12,11 +12,17 @@ const TOOL_REGISTRY = new Map<Function, WebmcpToolMeta[]>();
 /**
  * Method decorator that marks a service method as a WebMCP tool.
  *
- * Usage:
+ * For automatic registration, extend `WebmcpToolRegistrar`:
  * ```ts
- * @WebmcpTool({ name: 'search', description: '...', inputSchema: { ... } })
- * async search(args: { query: string }) { ... }
+ * @Injectable({ providedIn: 'root' })
+ * export class MyService extends WebmcpToolRegistrar {
+ *   @WebmcpTool({ name: 'search', description: '...', inputSchema: { ... } })
+ *   async search(args: { query: string }) { ... }
+ * }
  * ```
+ *
+ * For manual registration, call `registerDecoratedTools(this, inject(WebmcpService))`
+ * inside the constructor.
  */
 export function WebmcpTool(schema: WebMcpToolSchema): MethodDecorator {
   return (target: Object, propertyKey: string | symbol) => {
