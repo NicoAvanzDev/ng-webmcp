@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 (2026-03-16)
+
+### Features
+
+- **WebmcpToolRegistrar**: New abstract base class for automatic decorator-based tool registration without a manual constructor call
+
 ## 0.2.0 (2026-03-12)
 
 ### Breaking Changes
