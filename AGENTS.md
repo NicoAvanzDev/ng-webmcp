@@ -45,7 +45,8 @@ ng-webmcp/                          ← Angular CLI monorepo root
 │   │           │   ├── webmcp.service.ts        ← Core service
 │   │           │   └── webmcp.service.spec.ts
 │   │           ├── decorators/
-│   │           │   ├── webmcp-tool.decorator.ts ← @WebmcpTool method decorator
+│   │           │   ├── webmcp-tool.decorator.ts    ← @WebmcpTool method decorator + registerDecoratedTools()
+│   │           │   ├── webmcp-tool-registrar.ts    ← WebmcpToolRegistrar abstract base class
 │   │           │   └── webmcp-tool.decorator.spec.ts
 │   │           ├── directives/
 │   │           │   ├── webmcp-tool.directive.ts ← [webmcpTool] attribute directive
@@ -70,7 +71,7 @@ ng-webmcp/                          ← Angular CLI monorepo root
 │               ├── app.ts          ← Root App component (uses directive + service)
 │               ├── app.config.ts   ← ApplicationConfig with provideWebmcp()
 │               ├── app.routes.ts   ← Empty routes
-│               └── product.service.ts ← Demo service using @WebmcpTool decorator
+│               └── product.service.ts ← Demo service using @WebmcpTool + WebmcpToolRegistrar
 │
 └── dist/ng-webmcp/                 ← Build output (git-ignored); produced by `npm run build:lib`
 ```
@@ -84,6 +85,7 @@ ng-webmcp/                          ← Angular CLI monorepo root
 | `projects/ng-webmcp/src/public-api.ts`                           | Single barrel export for the entire public API                                                                                                                                         |
 | `projects/ng-webmcp/src/lib/services/webmcp.service.ts`          | `WebmcpService`: wraps `navigator.modelContext`; `registerTool()`, `unregisterTool()`, `getRegisteredTools()`, `isSupported()` (Angular Signal); SSR-safe; auto-cleans on `DestroyRef` |
 | `projects/ng-webmcp/src/lib/decorators/webmcp-tool.decorator.ts` | `@WebmcpTool(schema)` method decorator; stores metadata in a module-level `Map`; companion: `registerDecoratedTools(instance, service)`                                                |
+| `projects/ng-webmcp/src/lib/decorators/webmcp-tool-registrar.ts` | `WebmcpToolRegistrar` abstract base class; extends it to get automatic tool registration without a manual constructor call                                                             |
 | `projects/ng-webmcp/src/lib/directives/webmcp-tool.directive.ts` | `[webmcpTool]` standalone directive; inputs: `toolName`, `toolDescription`, `inputSchema`; output: `toolInvoked` EventEmitter                                                          |
 | `projects/ng-webmcp/src/lib/tokens/webmcp-config.token.ts`       | `WEBMCP_CONFIG` injection token; defaults: `autoInit: true`, `logLevel: 'warn'`, `fallbackBehavior: 'warn'`                                                                            |
 | `projects/ng-webmcp/src/lib/types/webmcp.types.ts`               | `JsonSchemaProperty`, `WebMcpInputSchema`, `WebMcpToolSchema`, `WebMcpToolDefinition`, `WebMcpToolResult`, `WebMcpConfig`, `ModelContextApi`                                           |
@@ -146,6 +148,7 @@ Defined in root `tsconfig.json`:
 - **Tree-shaking:** `"sideEffects": false` in the library's `package.json`; all directives/components are standalone.
 - **Zero runtime deps:** Only peer deps are `@angular/core` and `@angular/common`.
 - **Decorator registry:** `@WebmcpTool` uses a module-level `Map<Function, WebmcpToolMeta[]>` — not Reflect metadata.
+- **Auto-registration:** `WebmcpToolRegistrar` is the preferred pattern; it calls `inject(WebmcpService)` and `registerDecoratedTools()` automatically in its constructor. Use `registerDecoratedTools()` directly only when the class already extends another base class.
 - **Selector prefix:** `webmcp` for library; `app` for demo.
 
 ---
