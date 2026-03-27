@@ -30,6 +30,7 @@ export class WebmcpService implements OnDestroy {
   private readonly config: WebMcpConfig = inject(WEBMCP_CONFIG);
   private readonly destroyRef = inject(DestroyRef);
   private readonly registry = new Map<string, WebMcpToolSchema>();
+  private readonly controllers = new Map<string, AbortController>();
   private readonly _isSupported = signal(false);
 
   /** Whether navigator.modelContext is available */
@@ -44,39 +45,39 @@ export class WebmcpService implements OnDestroy {
 
   /**
    * Register a tool with navigator.modelContext.
-   * Follows the real WebMCP API: a single object with `execute` as a property.
+   * Returns an AbortController whose signal is passed to the native API.
+   * Abort the controller to unregister the tool.
    */
   registerTool<T = Record<string, unknown>>(
     schema: WebMcpToolSchema,
     handler: WebMcpToolHandler<T>,
-  ): void {
-    if (!isPlatformBrowser(this.platformId)) return;
+  ): AbortController | undefined {
+    if (!isPlatformBrowser(this.platformId)) return undefined;
 
     const mc = getModelContext();
     if (!mc) {
       this.handleUnsupported(`Cannot register tool "${schema.name}": navigator.modelContext is not available`);
-      return;
+      return undefined;
     }
 
+    const controller = new AbortController();
     const toolDef: WebMcpToolDefinition = {
       ...schema,
       execute: handler as WebMcpToolHandler,
     };
 
-    mc.registerTool(toolDef);
+    mc.registerTool(toolDef, { signal: controller.signal });
     this.registry.set(schema.name, schema);
+    this.controllers.set(schema.name, controller);
     this.log('debug', `Registered tool: ${schema.name}`);
-  }
 
-  unregisterTool(name: string): void {
-    if (!isPlatformBrowser(this.platformId)) return;
+    controller.signal.addEventListener('abort', () => {
+      this.registry.delete(schema.name);
+      this.controllers.delete(schema.name);
+      this.log('debug', `Unregistered tool: ${schema.name}`);
+    }, { once: true });
 
-    const mc = getModelContext();
-    if (mc) {
-      mc.unregisterTool(name);
-    }
-    this.registry.delete(name);
-    this.log('debug', `Unregistered tool: ${name}`);
+    return controller;
   }
 
   getRegisteredTools(): ReadonlyMap<string, WebMcpToolSchema> {
@@ -88,8 +89,8 @@ export class WebmcpService implements OnDestroy {
   }
 
   private disposeAll(): void {
-    for (const name of Array.from(this.registry.keys())) {
-      this.unregisterTool(name);
+    for (const controller of Array.from(this.controllers.values())) {
+      controller.abort();
     }
   }
 
