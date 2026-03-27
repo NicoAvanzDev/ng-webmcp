@@ -7,8 +7,10 @@ function installPolyfill(): Map<string, any> {
   const tools = new Map<string, any>();
   Object.defineProperty(navigator, 'modelContext', {
     value: {
-      registerTool: (tool: any) => tools.set(tool.name, tool),
-      unregisterTool: (name: string) => tools.delete(name),
+      registerTool: (tool: any, options?: { signal?: AbortSignal }) => {
+        tools.set(tool.name, tool);
+        options?.signal?.addEventListener('abort', () => tools.delete(tool.name), { once: true });
+      },
       _tools: tools,
     },
     configurable: true,

@@ -9,8 +9,10 @@ function installPolyfill(): Map<string, any> {
   const tools = new Map<string, any>();
   Object.defineProperty(navigator, 'modelContext', {
     value: {
-      registerTool: (tool: any) => tools.set(tool.name, tool),
-      unregisterTool: (name: string) => tools.delete(name),
+      registerTool: (tool: any, options?: { signal?: AbortSignal }) => {
+        tools.set(tool.name, tool);
+        options?.signal?.addEventListener('abort', () => tools.delete(tool.name), { once: true });
+      },
       _tools: tools,
     },
     configurable: true,
@@ -56,16 +58,16 @@ describe('WebmcpService', () => {
     expect(service.isSupported()).toBe(false);
   });
 
-  it('should register and unregister a tool', () => {
+  it('should register a tool and unregister it via AbortController', () => {
     const tools = installPolyfill();
     const service = createService();
     const handler = vi.fn().mockReturnValue({ content: [{ type: 'text', text: 'ok' }] });
 
-    service.registerTool(testSchema, handler);
+    const controller = service.registerTool(testSchema, handler);
     expect(service.getRegisteredTools().has('test-tool')).toBe(true);
     expect(tools.has('test-tool')).toBe(true);
 
-    service.unregisterTool('test-tool');
+    controller!.abort();
     expect(service.getRegisteredTools().has('test-tool')).toBe(false);
     expect(tools.has('test-tool')).toBe(false);
   });

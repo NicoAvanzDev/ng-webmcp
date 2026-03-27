@@ -6,7 +6,7 @@ export interface JsonSchemaProperty {
   items?: JsonSchemaProperty;
   properties?: Record<string, JsonSchemaProperty>;
   required?: string[];
-  oneOf?: Array<{ const: unknown; title?: string }>;
+  anyOf?: Array<{ const: unknown; title?: string }>;
 }
 
 export interface WebMcpInputSchema {
@@ -42,8 +42,7 @@ export interface WebMcpConfig {
 
 /** Shape of navigator.modelContext when available */
 export interface ModelContextApi {
-  registerTool(tool: WebMcpToolDefinition): void;
-  unregisterTool(name: string): void;
+  registerTool(tool: WebMcpToolDefinition, options?: { signal?: AbortSignal }): void;
   /** Polyfill inspection helper */
   _tools?: Map<string, WebMcpToolDefinition>;
 }

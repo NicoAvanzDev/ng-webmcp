@@ -31,13 +31,13 @@ export class WebmcpToolDirective implements OnInit {
       inputSchema: this.inputSchema,
     };
 
-    this.webmcp.registerTool(schema, (args) => {
+    const controller = this.webmcp.registerTool(schema, (args) => {
       this.toolInvoked.emit(args);
       return { content: [{ type: 'text' as const, text: 'Tool invoked via directive' }] };
     });
 
-    this.destroyRef.onDestroy(() => {
-      this.webmcp.unregisterTool(this.toolName);
-    });
+    if (controller) {
+      this.destroyRef.onDestroy(() => controller.abort());
+    }
   }
 }

@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 (2026-03-27)
+
+### Breaking Changes
+
+- **`registerTool()`**: Now accepts a second `options?: { signal?: AbortSignal }` parameter. The returned `AbortController` (or the caller-supplied signal) is used to unregister the tool. Aligns with the WebMCP Mar 27, 2026 spec change.
+- **`unregisterTool()` removed**: Use `controller.abort()` on the `AbortController` returned by `registerTool()` instead.
+- **`JsonSchemaProperty`**: `oneOf` renamed to `anyOf` to match the updated computed input schema in the WebMCP spec.
+
+### Notes
+
+- `toolparamdescription` for radio/checkbox groups must now be placed on the nearest parent `<fieldset>` element (declarative API browser behaviour change, no library code impact).
+
 ## 0.2.1 (2026-03-16)
 
 ### Features
