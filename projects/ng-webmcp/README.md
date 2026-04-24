@@ -53,6 +53,7 @@ export class ProductService {
   @WebmcpTool({
     name: 'search-products',
     description: 'Search the product catalog',
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
     inputSchema: {
       query: { type: 'string', description: 'Search term' },
     },
@@ -73,6 +74,12 @@ installWebMcpPolyfill();
 ```
 
 Import this before bootstrapping Angular.
+
+## Tool annotations
+
+`annotations` supports `readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint`, and `untrustedContentHint`.
+
+From Chrome **149.0.7810.0**, set `untrustedContentHint: true` for tools returning data from untrusted/external sources.
 
 ## Publishing
 

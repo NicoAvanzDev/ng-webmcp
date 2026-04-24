@@ -52,6 +52,7 @@ export class ProductService extends WebmcpToolRegistrar {
   @WebmcpTool({
     name: 'search-products',
     description: 'Search the product catalog',
+    annotations: { readOnlyHint: true, untrustedContentHint: true },
     inputSchema: {
       query: { type: 'string', description: 'Search term' },
     },
@@ -125,6 +126,18 @@ export class MyComponent {
 | `logLevel`         | `'debug' \| 'warn' \| 'none'`   | `'warn'` | Console logging level                                 |
 | `fallbackBehavior` | `'silent' \| 'warn' \| 'throw'` | `'warn'` | Behavior when `navigator.modelContext` is unavailable |
 
+### WebMcpToolSchema annotations
+
+`annotations` supports the WebMCP tool hints:
+
+- `readOnlyHint?: boolean`
+- `destructiveHint?: boolean`
+- `idempotentHint?: boolean`
+- `openWorldHint?: boolean`
+- `untrustedContentHint?: boolean`
+
+Starting with Chrome **149.0.7810.0**, set `untrustedContentHint: true` when a tool output includes content from external or unverified sources.
+
 ## Development Polyfill
 
 Since `navigator.modelContext` is only available in Chrome 146+ Canary with a flag, use the testing polyfill for development:
@@ -152,5 +165,4 @@ Import this **before** bootstrapping Angular.
 ## License
 
 MIT
-
 
