@@ -5,6 +5,7 @@
 ### Features
 
 - Added first-class typing for WebMCP `ToolAnnotations` hints, including `untrustedContentHint`.
+- Added `WebMcpToolAnnotations` to the public API exports.
 - Added directive support for passing `annotations` via `[webmcpTool]`.
 
 ### Documentation

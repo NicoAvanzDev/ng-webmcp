@@ -117,6 +117,7 @@ export class MyComponent {
 | `WebmcpModule`           | NgModule       | Module with `forRoot()` for NgModule-based apps         |
 | `provideWebmcp`          | Function       | Provider function for standalone apps                   |
 | `WEBMCP_CONFIG`          | InjectionToken | Configuration token                                     |
+| `WebMcpToolAnnotations`  | Type           | Typed WebMCP tool annotation hints                      |
 
 ### WebMcpConfig
 
@@ -165,4 +166,3 @@ Import this **before** bootstrapping Angular.
 ## License
 
 MIT
-

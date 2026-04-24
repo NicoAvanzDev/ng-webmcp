@@ -21,6 +21,7 @@ export interface WebMcpToolAnnotations {
   idempotentHint?: boolean;
   openWorldHint?: boolean;
   untrustedContentHint?: boolean;
+  [key: string]: boolean | undefined;
 }
 
 export interface WebMcpToolDefinition<T = Record<string, unknown>> {

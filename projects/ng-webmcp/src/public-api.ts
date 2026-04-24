@@ -13,6 +13,7 @@ export type {
   WebMcpToolSchema,
   WebMcpToolDefinition,
   WebMcpToolResult,
+  WebMcpToolAnnotations,
   WebMcpConfig,
   WebMcpInputSchema,
   JsonSchemaProperty,
