@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.1 (2026-04-24)
+
+### Features
+
+- Added first-class typing for WebMCP `ToolAnnotations` hints, including `untrustedContentHint`.
+- Added `WebMcpToolAnnotations` to the public API exports.
+- Added directive support for passing `annotations` via `[webmcpTool]`.
+
+### Documentation
+
+- Updated README examples and guidance to call out setting `untrustedContentHint: true` for untrusted/external content on Chrome 149.0.7810.0+.
+
 ## 0.3.0 (2026-03-27)
 
 ### Breaking Changes

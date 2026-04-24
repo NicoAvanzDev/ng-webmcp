@@ -31,6 +31,7 @@ function clearPolyfill(): void {
       webmcpTool
       toolName="test-directive"
       toolDescription="A directive tool"
+      [annotations]="{ readOnlyHint: false, untrustedContentHint: true }"
       (toolInvoked)="onInvoke($event)"
     >Click</button>
   `,
@@ -63,6 +64,10 @@ describe('WebmcpToolDirective', () => {
 
   it('should register tool on init', () => {
     expect(tools.has('test-directive')).toBe(true);
+    expect(tools.get('test-directive').annotations).toEqual({
+      readOnlyHint: false,
+      untrustedContentHint: true,
+    });
   });
 
   it('should unregister tool on destroy', () => {

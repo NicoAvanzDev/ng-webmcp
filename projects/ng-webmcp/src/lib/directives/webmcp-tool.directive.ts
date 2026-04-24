@@ -8,7 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import { WebmcpService } from '../services/webmcp.service';
-import type { WebMcpInputSchema } from '../types/webmcp.types';
+import type { WebMcpInputSchema, WebMcpToolAnnotations } from '../types/webmcp.types';
 
 @Directive({
   selector: '[webmcpTool]',
@@ -21,6 +21,7 @@ export class WebmcpToolDirective implements OnInit {
   @Input({ required: true }) toolName!: string;
   @Input({ required: true }) toolDescription!: string;
   @Input() inputSchema: WebMcpInputSchema = { type: 'object', properties: {} };
+  @Input() annotations?: WebMcpToolAnnotations;
 
   @Output() toolInvoked = new EventEmitter<any>();
 
@@ -29,6 +30,7 @@ export class WebmcpToolDirective implements OnInit {
       name: this.toolName,
       description: this.toolDescription,
       inputSchema: this.inputSchema,
+      annotations: this.annotations,
     };
 
     const controller = this.webmcp.registerTool(schema, (args) => {
